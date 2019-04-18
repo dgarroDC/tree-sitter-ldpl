@@ -41,7 +41,14 @@ module.exports = grammar({
 
     text: $ => /"([^"\\]||\\[abtnvfre0\\"])*"/,
 
-    _rel_op: $ => "TODO"
+    rel_op: $ => choice(
+        caseInsensitive("equal to"),
+        caseInsensitive("not equal to"),
+        caseInsensitive("greater than"),
+        caseInsensitive("less than"),
+        caseInsensitive("greater than or equal to"),
+        caseInsensitive("less than or equal to"),
+    ),
 
     data_section: $ => seq(
         caseInsensitive("data:\n"),
@@ -120,7 +127,7 @@ module.exports = grammar({
         caseInsensitive("if"),
         $._whitespace,
         $._value,
-        $._rel_op,
+        $.rel_op,
         $._whitespace,
         $._value,
         $._whitespace,
@@ -135,7 +142,8 @@ module.exports = grammar({
 function caseInsensitive(keyword) {
   return new RegExp(keyword
     .split('')
-    .map(letter => `[${letter}${letter.toUpperCase()}]`)
+    .map(letter =>
+        letter == ' ' ? '[ \t]+' : `[${letter}${letter.toUpperCase()}]`)
     .join('')
   )
 }
