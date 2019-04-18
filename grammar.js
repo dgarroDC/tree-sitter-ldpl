@@ -39,7 +39,16 @@ module.exports = grammar({
 
     number: $ => "123",
 
-    text: $ => /"([^"\\]||\\[abtnvfre0\\"])*"/,
+    text: $ => seq(
+        "\"",
+        repeat(choice(
+            /[^"\\]/,
+            $.escape_sequence
+        )),
+        "\""
+    ),
+
+    escape_sequence: $ => /\\./,
 
     proc_name: $ => $._identifier,
 
