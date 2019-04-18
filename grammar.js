@@ -12,7 +12,7 @@ module.exports = grammar({
 
     _whitespace: $ => /[ \t]/,
 
-    _identifier: $ => /[^\s:"][^\s:]*/,
+    identifier: $ => /[^\s:"][^\s:]*/,
 
     _value: $ => choice(
         $._variable,
@@ -20,14 +20,12 @@ module.exports = grammar({
     ),
 
     _variable: $ => choice(
-        $.var_name,
+        $.identifier,
         $.vector_element
     ),
 
-    var_name: $ => $._identifier,
-
     vector_element: $ => seq(
-        $.var_name,
+        $.identifier,
         ':',
         $._value
     ),
@@ -50,8 +48,6 @@ module.exports = grammar({
 
     escape_sequence: $ => /\\./,
 
-    proc_name: $ => $._identifier,
-
     data_section: $ => seq(
         caseInsensitive("data:\n"),
         repeat(choice($.var_definition, '\n'))
@@ -63,7 +59,7 @@ module.exports = grammar({
     ),
 
     var_definition: $ => seq(
-        $.var_name,
+        $.identifier,
         caseInsensitive(" is "),
         $.type,
         "\n"
@@ -95,7 +91,7 @@ module.exports = grammar({
 
     sub_proc: $ => seq(
         caseInsensitive("sub-procedure "),
-        $.proc_name,
+        $.identifier,
         "\n",
         $.body,
         caseInsensitive("end sub-procedure")
@@ -172,7 +168,7 @@ module.exports = grammar({
             caseInsensitive("call"),
             caseInsensitive("call sub-procedure")
         ),
-        $.proc_name
+        $.identifier
     ),
 
     return: $ => caseInsensitive("return"),
