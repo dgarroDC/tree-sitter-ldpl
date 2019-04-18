@@ -41,15 +41,6 @@ module.exports = grammar({
 
     text: $ => /"([^"\\]||\\[abtnvfre0\\"])*"/,
 
-    rel_op: $ => choice(
-        caseInsensitive("equal to"),
-        caseInsensitive("not equal to"),
-        caseInsensitive("greater than"),
-        caseInsensitive("less than"),
-        caseInsensitive("greater than or equal to"),
-        caseInsensitive("less than or equal to"),
-    ),
-
     data_section: $ => seq(
         caseInsensitive("data:\n"),
         repeat(choice($.var_definition, '\n'))
@@ -79,7 +70,7 @@ module.exports = grammar({
             // Control flow
             $.store,
             $.if,
-            // $.while,
+            $.while,
             // $.break,
             // $.continue,
             // $.call,
@@ -120,12 +111,20 @@ module.exports = grammar({
     else: $ => seq(
         caseInsensitive("else"),
         "\n",
-        $._block
+        $.body
     ),
 
     _if_then_block: $ => seq(
         caseInsensitive("if"),
         $._whitespace,
+        $.guard,
+        $._whitespace,
+        caseInsensitive("then"),
+        "\n",
+        $.body
+    ),
+
+    guard: $ => seq(
         $._value,
         $._whitespace,
         caseInsensitive("is"),
@@ -133,10 +132,28 @@ module.exports = grammar({
         $.rel_op,
         $._whitespace,
         $._value,
+    ),
+
+    rel_op: $ => choice(
+        caseInsensitive("equal to"),
+        caseInsensitive("not equal to"),
+        caseInsensitive("greater than"),
+        caseInsensitive("less than"),
+        caseInsensitive("greater than or equal to"),
+        caseInsensitive("less than or equal to"),
+    ),
+
+    body: $ => $._block,
+
+    while: $ => seq(
+        caseInsensitive("while"),
         $._whitespace,
-        caseInsensitive("then"),
+        $.guard,
+        $._whitespace,
+        caseInsensitive("do"),
         "\n",
-        $._block
+        $.body,
+        caseInsensitive("repeat")
     ),
   }
 });
