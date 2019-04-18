@@ -1,15 +1,18 @@
 module.exports = grammar({
   name: 'LDPL',
 
+  extras: $ => [/[ \t]/],
+
   rules: {
     source_file: $ => seq(
+        repeat('\n'),
         optional($.data_section),
         $.procedure_section
     ),
 
     data_section: $ => seq(
         caseInsensitive("data:\n"),
-        repeat($.var_definition)
+        repeat(choice($.var_definition, "\n"))
     ),
 
     procedure_section: $ => seq(
@@ -20,13 +23,14 @@ module.exports = grammar({
     var_definition: $ => seq(
         $.identifier,
         caseInsensitive("is"),
-        $.type
+        $.type,
+        "\n"
     ),
 
     identifier: $ => /[^\s:]+/,
 
     //TODO: Make this pretty
-    type: $ => /([nN][uU][mM][bB][eE][rR]|[tT][eE][xX][tT])(\s+[vV][eE][cC][tT][oO][rR])?/
+    type: $ => /([nN][uU][mM][bB][eE][rR]|[tT][eE][xX][tT])([ \t]+[vV][eE][cC][tT][oO][rR])?/
   }
 });
 
