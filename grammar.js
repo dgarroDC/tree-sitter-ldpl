@@ -41,6 +41,8 @@ module.exports = grammar({
 
     text: $ => /"([^"\\]||\\[abtnvfre0\\"])*"/,
 
+    proc_name: $ => $._identifier,
+
     data_section: $ => seq(
         caseInsensitive("data:\n"),
         repeat(choice($.var_definition, '\n'))
@@ -73,7 +75,7 @@ module.exports = grammar({
             $.while,
             $.break,
             $.continue,
-            // $.call,
+            $.call_sub,
             $.return,
             $.exit,
             // $.wait,
@@ -159,6 +161,15 @@ module.exports = grammar({
     break: $ => caseInsensitive("break"),
 
     continue: $ => caseInsensitive("continue"),
+
+    // TODO: Analise "call sub-procedure"
+    call_sub: $ => seq(
+        choice(
+            caseInsensitive("call"),
+            caseInsensitive("call sub-procedure")
+        ),
+        $.proc_name
+    ),
 
     return: $ => caseInsensitive("return"),
 
