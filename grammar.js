@@ -55,9 +55,7 @@ module.exports = grammar({
 
     var_definition: $ => seq(
         $.var_name,
-        $._whitespace,
-        caseInsensitive("is"),
-        $._whitespace,
+        caseInsensitive(" is "),
         $.type,
         "\n"
     ),
@@ -87,8 +85,7 @@ module.exports = grammar({
     ),
 
     sub_proc: $ => seq(
-        caseInsensitive("sub-procedure"),
-        $._whitespace,
+        caseInsensitive("sub-procedure "),
         $.proc_name,
         "\n",
         $.body,
@@ -96,12 +93,9 @@ module.exports = grammar({
     ),
 
     store: $ => seq(
-        caseInsensitive("store"),
-        $._whitespace,
+        caseInsensitive("store "),
         $._value,
-        $._whitespace,
-        caseInsensitive("in"),
-        $._whitespace,
+        caseInsensitive(" in "),
         $._variable,
     ),
 
@@ -109,14 +103,11 @@ module.exports = grammar({
         $._if_then_block,
         repeat($.else_if),
         optional($.else),
-        caseInsensitive("end"),
-        $._whitespace,
-        caseInsensitive("if")
+        caseInsensitive("end if")
     ),
 
     else_if: $ => seq(
-        caseInsensitive("else"),
-        $._whitespace,
+        caseInsensitive("else "),
         $._if_then_block
     ),
 
@@ -127,20 +118,16 @@ module.exports = grammar({
     ),
 
     _if_then_block: $ => seq(
-        caseInsensitive("if"),
-        $._whitespace,
+        caseInsensitive("if "),
         $.guard,
-        $._whitespace,
-        caseInsensitive("then"),
+        caseInsensitive(" then"),
         "\n",
         $.body
     ),
 
     guard: $ => seq(
         $._value,
-        $._whitespace,
-        caseInsensitive("is"),
-        $._whitespace,
+        caseInsensitive(" is "),
         $.rel_op,
         $._whitespace,
         $._value,
@@ -158,11 +145,9 @@ module.exports = grammar({
     body: $ => $._block,
 
     while: $ => seq(
-        caseInsensitive("while"),
-        $._whitespace,
+        caseInsensitive("while "),
         $.guard,
-        $._whitespace,
-        caseInsensitive("do"),
+        caseInsensitive(" do"),
         "\n",
         $.body,
         caseInsensitive("repeat")
