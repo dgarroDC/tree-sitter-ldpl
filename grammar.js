@@ -69,6 +69,7 @@ module.exports = grammar({
 
     _statement: $ => seq(
         choice(
+            $.sub_proc,
             // Control flow
             $.store,
             $.if,
@@ -83,6 +84,15 @@ module.exports = grammar({
             // $.label,
         ),
         '\n'
+    ),
+
+    sub_proc: $ => seq(
+        caseInsensitive("sub-procedure"),
+        $._whitespace,
+        $.proc_name,
+        "\n",
+        $.body,
+        caseInsensitive("end sub-procedure")
     ),
 
     store: $ => seq(
