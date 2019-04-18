@@ -1,7 +1,7 @@
 module.exports = grammar({
   name: 'LDPL',
 
-  extras: $ => [/[ \t]/],
+  extras: $ => [$._whitespace],
 
   rules: {
     source_file: $ => seq(
@@ -10,27 +10,83 @@ module.exports = grammar({
         $.procedure_section
     ),
 
+    _whitespace: $ => /[ \t]/,
+
+    _identifier: $ => /[^\s:"][^\s:]*/,
+
+    _value: $ => choice(
+        $._variable,
+        $._literal
+    ),
+
+    _variable: $ => choice(
+        $.var_name,
+        $.vector_element
+    ),
+
+    var_name: $ => $._identifier,
+
+    vector_element: $ => seq(
+        $.var_name,
+        ':',
+        $._value
+    ),
+
+    _literal: $ => choice(
+        $.number,
+        $.text
+    ),
+
+    number: $ => "123",
+
+    text: $ => /"([^"\\]||\\[abtnvfre0\\"])*"/,
+
     data_section: $ => seq(
         caseInsensitive("data:\n"),
-        repeat(choice($.var_definition, "\n"))
+        repeat(choice($.var_definition, '\n'))
     ),
 
     procedure_section: $ => seq(
         caseInsensitive("procedure:\n"),
-        "TODO"
+        repeat(choice($._statement, '\n'))
     ),
 
     var_definition: $ => seq(
-        $.identifier,
+        $.var_name,
+        $._whitespace,
         caseInsensitive("is"),
+        $._whitespace,
         $.type,
         "\n"
     ),
 
-    identifier: $ => /[^\s:]+/,
-
     //TODO: Make this pretty
-    type: $ => /([nN][uU][mM][bB][eE][rR]|[tT][eE][xX][tT])([ \t]+[vV][eE][cC][tT][oO][rR])?/
+    type: $ => /([nN][uU][mM][bB][eE][rR]|[tT][eE][xX][tT])([ \t]+[vV][eE][cC][tT][oO][rR])?/,
+
+    _statement: $ => choice(
+        // Control flow
+        $.store//,
+        // $.if,
+        // $.while,
+        // $.break,
+        // $.continue,
+        // $.call,
+        // $.return,
+        // $.exit,
+        // $.wait,
+        // $.goto,
+        // $.label,
+    ),
+
+    store: $ => seq(
+        caseInsensitive("store"),
+        $._whitespace,
+        $._value,
+        $._whitespace,
+        caseInsensitive("in"),
+        $._whitespace,
+        $._variable
+    )
   }
 });
 
