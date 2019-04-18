@@ -71,11 +71,11 @@ module.exports = grammar({
             $.store,
             $.if,
             $.while,
-            // $.break,
-            // $.continue,
+            $.break,
+            $.continue,
             // $.call,
-            // $.return,
-            // $.exit,
+            $.return,
+            $.exit,
             // $.wait,
             // $.goto,
             // $.label,
@@ -155,6 +155,15 @@ module.exports = grammar({
         $.body,
         caseInsensitive("repeat")
     ),
+
+    break: $ => caseInsensitive("break"),
+
+    continue: $ => caseInsensitive("continue"),
+
+    return: $ => caseInsensitive("return"),
+
+    exit: $ => caseInsensitive("exit")
+
   }
 });
 
