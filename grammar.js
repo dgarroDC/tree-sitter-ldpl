@@ -9,13 +9,24 @@ module.exports = grammar({
 
     data_section: $ => seq(
         caseInsensitive("data:\n"),
-        "TODO"
+        repeat($.var_definition)
     ),
 
     procedure_section: $ => seq(
         caseInsensitive("procedure:\n"),
         "TODO"
     ),
+
+    var_definition: $ => seq(
+        $.identifier,
+        caseInsensitive("is"),
+        $.type
+    ),
+
+    identifier: $ => /[^\s:]+/,
+
+    //TODO: Make this pretty
+    type: $ => /([nN][uU][mM][bB][eE][rR]|[tT][eE][xX][tT])(\s+[vV][eE][cC][tT][oO][rR])?/
   }
 });
 
