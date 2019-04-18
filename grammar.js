@@ -8,13 +8,22 @@ module.exports = grammar({
     ),
 
     data_section: $ => seq(
-        "DATA:\n",
+        caseInsensitive("data:\n"),
         "TODO"
     ),
 
     procedure_section: $ => seq(
-        "PROCEDURE:\n",
+        caseInsensitive("procedure:\n"),
         "TODO"
     ),
   }
 });
+
+//https://github.com/tree-sitter/tree-sitter/issues/122#issuecomment-356370963
+function caseInsensitive(keyword) {
+  return new RegExp(keyword
+    .split('')
+    .map(letter => `[${letter}${letter.toUpperCase()}]`)
+    .join('')
+  )
+}
