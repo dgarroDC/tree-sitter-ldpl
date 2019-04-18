@@ -41,6 +41,8 @@ module.exports = grammar({
 
     text: $ => /"([^"\\]||\\[abtnvfre0\\"])*"/,
 
+    _rel_op: $ => "TODO"
+
     data_section: $ => seq(
         caseInsensitive("data:\n"),
         repeat(choice($.var_definition, '\n'))
@@ -48,7 +50,7 @@ module.exports = grammar({
 
     procedure_section: $ => seq(
         caseInsensitive("procedure:\n"),
-        repeat(choice($._statement, '\n'))
+        $._block
     ),
 
     var_definition: $ => seq(
@@ -63,19 +65,24 @@ module.exports = grammar({
     //TODO: Make this pretty
     type: $ => /([nN][uU][mM][bB][eE][rR]|[tT][eE][xX][tT])([ \t]+[vV][eE][cC][tT][oO][rR])?/,
 
-    _statement: $ => choice(
-        // Control flow
-        $.store//,
-        // $.if,
-        // $.while,
-        // $.break,
-        // $.continue,
-        // $.call,
-        // $.return,
-        // $.exit,
-        // $.wait,
-        // $.goto,
-        // $.label,
+    _block: $ => repeat1(choice($._statement, '\n')),
+
+    _statement: $ => seq(
+        choice(
+            // Control flow
+            $.store,
+            $.if,
+            // $.while,
+            // $.break,
+            // $.continue,
+            // $.call,
+            // $.return,
+            // $.exit,
+            // $.wait,
+            // $.goto,
+            // $.label,
+        ),
+        '\n'
     ),
 
     store: $ => seq(
@@ -85,8 +92,42 @@ module.exports = grammar({
         $._whitespace,
         caseInsensitive("in"),
         $._whitespace,
-        $._variable
-    )
+        $._variable,
+    ),
+
+    if: $ => seq(
+        $._if_then_block,
+        repeat($.else_if),
+        optional($.else),
+        caseInsensitive("end"),
+        $._whitespace,
+        caseInsensitive("if")
+    ),
+
+    else_if: $ => seq(
+        caseInsensitive("else"),
+        $._whitespace,
+        $._if_then_block
+    ),
+
+    else: $ => seq(
+        caseInsensitive("else"),
+        "\n",
+        $._block
+    ),
+
+    _if_then_block: $ => seq(
+        caseInsensitive("if"),
+        $._whitespace,
+        $._value,
+        $._rel_op,
+        $._whitespace,
+        $._value,
+        $._whitespace,
+        caseInsensitive("then"),
+        "\n",
+        $._block
+    ),
   }
 });
 
