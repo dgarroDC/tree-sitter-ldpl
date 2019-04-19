@@ -140,7 +140,7 @@ module.exports = grammar({
         caseInsensitive("sub-procedure "),
         $.identifier,
         "\n",
-        $.body,
+        optional($.body),
         caseInsensitive("end sub-procedure")
     ),
 
@@ -169,7 +169,7 @@ module.exports = grammar({
     else: $ => seq(
         caseInsensitive("else"),
         "\n",
-        $.body
+        optional($.body),
     ),
 
     _if_then_block: $ => seq(
@@ -177,7 +177,7 @@ module.exports = grammar({
         $.guard,
         caseInsensitive(" then"),
         "\n",
-        $.body
+        optional($.body),
     ),
 
     guard: $ => seq(
@@ -204,7 +204,7 @@ module.exports = grammar({
         $.guard,
         caseInsensitive(" do"),
         "\n",
-        $.body,
+        optional($.body),
         caseInsensitive("repeat")
     ),
 
