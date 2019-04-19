@@ -149,12 +149,18 @@ module.exports = grammar({
     ),
 
     sub_proc: $ => seq(
-        caseInsensitive("sub-procedure "),
-        $.identifier,
+        $.sub_proc_begin,
         "\n",
         optional($.body),
-        caseInsensitive("end sub-procedure")
+        $.sub_proc_end
     ),
+
+    sub_proc_begin: $ => seq(
+        caseInsensitive("sub-procedure "),
+        $.identifier
+    ),
+
+    sub_proc_end: $ => caseInsensitive("end sub-procedure"),
 
     store: $ => seq(
         caseInsensitive("store "),
@@ -164,32 +170,43 @@ module.exports = grammar({
     ),
 
     if: $ => seq(
-        $._if_then_block,
-        repeat($.else_if),
-        optional($.else),
-        choice(
-            caseInsensitive("end if"),
-            caseInsensitive("end-if")
-        )
-    ),
-
-    else_if: $ => seq(
-        caseInsensitive("else "),
-        $._if_then_block
-    ),
-
-    else: $ => seq(
-        caseInsensitive("else"),
+        $.if_begin,
         "\n",
         optional($.body),
+        repeat($.else_if),
+        optional($.else),
+        $.if_end
     ),
 
-    _if_then_block: $ => seq(
+    if_begin: $ => seq(
         caseInsensitive("if "),
         $.guard,
         caseInsensitive(" then"),
+    ),
+
+    else_if: $ => seq(
+        $.else_if_begin,
+        "\n",
+        optional($.body)
+    ),
+
+    else_if_begin: $ => seq(
+        caseInsensitive("else if "),
+        $.guard,
+        caseInsensitive(" then"),
+    ),
+
+    else: $ => seq(
+        $.else_begin,
         "\n",
         optional($.body),
+    ),
+
+    else_begin: $ => caseInsensitive("else"),
+
+    if_end: $ => choice(
+        caseInsensitive("end if"),
+        caseInsensitive("end-if")
     ),
 
     guard: $ => seq(
@@ -212,13 +229,19 @@ module.exports = grammar({
     body: $ => $._block,
 
     while: $ => seq(
-        caseInsensitive("while "),
-        $.guard,
-        caseInsensitive(" do"),
+        $.while_begin,
         "\n",
         optional($.body),
-        caseInsensitive("repeat")
+        $.while_end
     ),
+
+    while_begin: $ => seq(
+        caseInsensitive("while "),
+        $.guard,
+        caseInsensitive(" do")
+    ),
+
+    while_end: $ => caseInsensitive("repeat"),
 
     break: $ => caseInsensitive("break"),
 
