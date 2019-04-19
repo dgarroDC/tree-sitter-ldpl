@@ -79,7 +79,7 @@ module.exports = grammar({
     ),
 
     type: $ => seq(
-        optional("external "),
+        optional(caseInsensitive("external ")),
         choice(
             caseInsensitive("number"),
             caseInsensitive("text")
