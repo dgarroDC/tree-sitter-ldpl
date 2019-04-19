@@ -12,11 +12,14 @@ module.exports = grammar({
 
     _whitespace: $ => /[ \t]/,
 
-    identifier: $ => /[^\s:"][^\s:]*/,
-
     _value: $ => choice(
         $._variable,
         $._literal
+    ),
+
+    _number_value: $ => choice(
+        $._variable,
+        $.number
     ),
 
     _variable: $ => choice(
@@ -35,7 +38,7 @@ module.exports = grammar({
         $.text
     ),
 
-    number: $ => "123",
+    number: $ => /[+-]?((\d*\.\d+)|(\d+\.?))([eE][+-]?\d+)?[fFlL]?/,
 
     text: $ => seq(
         "\"",
@@ -47,6 +50,8 @@ module.exports = grammar({
     ),
 
     escape_sequence: $ => /\\./,
+
+    identifier: $ => /[^\s:]+/,
 
     data_section: $ => seq(
         caseInsensitive("data:\n"),
@@ -82,7 +87,7 @@ module.exports = grammar({
             $.call_sub,
             $.return,
             $.exit,
-            // $.wait,
+            $.wait,
             // $.goto,
             // $.label,
         ),
@@ -173,7 +178,13 @@ module.exports = grammar({
 
     return: $ => caseInsensitive("return"),
 
-    exit: $ => caseInsensitive("exit")
+    exit: $ => caseInsensitive("exit"),
+
+    wait: $ => seq(
+        caseInsensitive("wait "),
+        $._number_value,
+        caseInsensitive(" milliseconds")
+    ),
 
   }
 });
