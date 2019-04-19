@@ -4,7 +4,7 @@
   "description": "LDPL grammar for tree-sitter",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tree-sitter generate && node-gyp build"
   },
   "repository": "github:dgarroDC/tree-sitter-ldpl",
   "keywords": [
