@@ -59,7 +59,7 @@ module.exports = grammar({
     escape_sequence: $ => /\\./,
 
     // TODO: Don't match number
-    identifier: $ => /[^\s:"][^\s:]*/,
+    identifier: $ => /[^\s:"]*/,
 
     data_section: $ => seq(
         caseInsensitive("data:\n"),
@@ -78,8 +78,14 @@ module.exports = grammar({
         "\n"
     ),
 
-    //TODO: Make this pretty
-    type: $ => /([nN][uU][mM][bB][eE][rR]|[tT][eE][xX][tT])([ \t]+[vV][eE][cC][tT][oO][rR])?/,
+    type: $ => seq(
+        optional("external "),
+        choice(
+            caseInsensitive("number"),
+            caseInsensitive("text")
+        ),
+        optional(caseInsensitive(" vector"))
+    ),
 
     _block: $ => repeat1(choice($._statement, '\n')),
 
@@ -93,6 +99,7 @@ module.exports = grammar({
             $.break,
             $.continue,
             $.call_sub,
+            $.call_ext,
             $.return,
             $.exit,
             $.wait,
@@ -114,7 +121,17 @@ module.exports = grammar({
             $.store_length,
             $.store_char,
             $.store_char_code,
-            $.in_join
+            $.in_join,
+            // IO
+            $.display,
+            $.accept,
+            $.execute,
+            $.execute_store_ouput,
+            $.execute_store_exit_code,
+            $.accept_until_eof,
+            $.load_file,
+            $.write_file,
+            $.append_file,
         ),
         '\n'
     ),
@@ -192,12 +209,16 @@ module.exports = grammar({
 
     continue: $ => caseInsensitive("continue"),
 
-    // TODO: Analyze "call sub-procedure"
     call_sub: $ => seq(
         choice(
-            caseInsensitive("call"),
-            caseInsensitive("call sub-procedure")
+            caseInsensitive("call "),
+            caseInsensitive("call sub-procedure ")
         ),
+        $.identifier
+    ),
+
+    call_ext: $ => seq(
+        caseInsensitive("call external "),
         $.identifier
     ),
 
@@ -329,6 +350,10 @@ module.exports = grammar({
         caseInsensitive("in "),
         $._variable,
         caseInsensitive(" join "),
+        $.multiple_values
+    ),
+
+    multiple_values: $ => seq(
         repeat1(seq(choice(
             $._value,
             caseInsensitive("crlf")
@@ -337,6 +362,62 @@ module.exports = grammar({
             $._value,
             caseInsensitive("crlf")
         )
+    ),
+
+    display: $ => seq(
+        caseInsensitive("display "),
+        $.multiple_values
+    ),
+
+    accept: $ => seq(
+        caseInsensitive("accept "),
+        $._variable
+    ),
+
+    execute: $ => seq(
+        caseInsensitive("execute "),
+        $._text_value
+    ),
+
+    execute_store_ouput: $ => seq(
+        caseInsensitive("execute "),
+        $._text_value,
+        caseInsensitive(" and store output in "),
+        $._variable
+    ),
+
+    execute_store_exit_code: $ => seq(
+        caseInsensitive("execute "),
+        $._text_value,
+        caseInsensitive(" and store exit code in "),
+        $._variable
+    ),
+
+    accept_until_eof: $ => seq(
+        caseInsensitive("accept "),
+        $._variable,
+        caseInsensitive(" until eof")
+    ),
+
+    load_file: $ => seq(
+        caseInsensitive("load file "),
+        $._text_value,
+        caseInsensitive(" in "),
+        $._variable
+    ),
+
+    write_file: $ => seq(
+        caseInsensitive("write "),
+        $._value,
+        caseInsensitive(" to file "),
+        $._text_value
+    ),
+
+    append_file: $ => seq(
+        caseInsensitive("append "),
+        $._value,
+        caseInsensitive(" to file "),
+        $._text_value
     ),
   }
 });
