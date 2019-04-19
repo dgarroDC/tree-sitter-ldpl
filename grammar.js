@@ -88,8 +88,8 @@ module.exports = grammar({
             $.return,
             $.exit,
             $.wait,
-            // $.goto,
-            // $.label,
+            $.goto,
+            $.label,
         ),
         '\n'
     ),
@@ -186,6 +186,15 @@ module.exports = grammar({
         caseInsensitive(" milliseconds")
     ),
 
+    goto: $ => seq(
+        caseInsensitive("goto "),
+        $.identifier
+    ),
+
+    label: $ => seq(
+        caseInsensitive("label "),
+        $.identifier
+    ),
   }
 });
 
