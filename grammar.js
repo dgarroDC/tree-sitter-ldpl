@@ -138,7 +138,7 @@ module.exports = grammar({
             $.display,
             $.accept,
             $.execute,
-            $.execute_store_ouput,
+            $.execute_store_output,
             $.execute_store_exit_code,
             $.accept_until_eof,
             $.load_file,
@@ -420,7 +420,7 @@ module.exports = grammar({
         $._text_value
     ),
 
-    execute_store_ouput: $ => seq(
+    execute_store_output: $ => seq(
         caseInsensitive("execute "),
         $._text_value,
         caseInsensitive(" and store output in "),
