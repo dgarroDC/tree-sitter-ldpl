@@ -34,8 +34,15 @@
       "value": "[ \\t]"
     },
     "comment": {
-      "type": "PATTERN",
-      "value": "#.*"
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "#.*"
+        }
+      }
     },
     "_value": {
       "type": "CHOICE",
@@ -136,8 +143,15 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "PATTERN",
-                "value": "[^\"\\\\]"
+                "type": "TOKEN",
+                "content": {
+                  "type": "PREC",
+                  "value": 2,
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "[^\"\\\\]"
+                  }
+                }
               },
               {
                 "type": "SYMBOL",
@@ -455,8 +469,16 @@
           "value": "\n"
         },
         {
-          "type": "SYMBOL",
-          "name": "body"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "PATTERN",
@@ -551,8 +573,16 @@
           "value": "\n"
         },
         {
-          "type": "SYMBOL",
-          "name": "body"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -576,8 +606,16 @@
           "value": "\n"
         },
         {
-          "type": "SYMBOL",
-          "name": "body"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -659,8 +697,16 @@
           "value": "\n"
         },
         {
-          "type": "SYMBOL",
-          "name": "body"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "PATTERN",
