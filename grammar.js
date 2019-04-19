@@ -1,7 +1,7 @@
 module.exports = grammar({
   name: 'LDPL',
 
-  extras: $ => [$._whitespace],
+  extras: $ => [$._whitespace, $.comment],
 
   rules: {
     source_file: $ => seq(
@@ -11,6 +11,8 @@ module.exports = grammar({
     ),
 
     _whitespace: $ => /[ \t]/,
+
+    comment: $ => /#.*/,
 
     _value: $ => choice(
         $._variable,
@@ -51,6 +53,7 @@ module.exports = grammar({
 
     escape_sequence: $ => /\\./,
 
+    // TODO: Don't match text or number
     identifier: $ => /[^\s:]+/,
 
     data_section: $ => seq(
