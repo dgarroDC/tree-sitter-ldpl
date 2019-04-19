@@ -350,10 +350,6 @@ module.exports = grammar({
         caseInsensitive("in "),
         $._variable,
         caseInsensitive(" join "),
-        $.multiple_values
-    ),
-
-    multiple_values: $ => seq(
         repeat1(seq(choice(
             $._value,
             caseInsensitive("crlf")
@@ -366,7 +362,14 @@ module.exports = grammar({
 
     display: $ => seq(
         caseInsensitive("display "),
-        $.multiple_values
+        repeat(seq(choice(
+            $._value,
+            caseInsensitive("crlf")
+        ), $._whitespace)),
+        choice(
+            $._value,
+            caseInsensitive("crlf")
+        )
     ),
 
     accept: $ => seq(
