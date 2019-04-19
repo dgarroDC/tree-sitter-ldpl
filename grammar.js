@@ -107,7 +107,7 @@ module.exports = grammar({
             $.label,
             // Arithmetic
             $.add,
-            $.substract,
+            $.subtract,
             $.multiply,
             $.divide,
             $.modulo,
@@ -251,8 +251,8 @@ module.exports = grammar({
         $._variable
     ),
 
-    substract: $ => seq(
-        caseInsensitive("substract "),
+    subtract: $ => seq(
+        caseInsensitive("subtract "),
         $._number_value,
         caseInsensitive(" from "),
         $._number_value,
