@@ -155,7 +155,10 @@ module.exports = grammar({
         $._if_then_block,
         repeat($.else_if),
         optional($.else),
-        caseInsensitive("end if")
+        choice(
+            caseInsensitive("end if"),
+            caseInsensitive("end-if")
+        )
     ),
 
     else_if: $ => seq(
