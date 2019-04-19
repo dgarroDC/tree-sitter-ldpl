@@ -453,7 +453,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "execute_store_ouput"
+              "name": "execute_store_output"
             },
             {
               "type": "SYMBOL",
@@ -1347,7 +1347,7 @@
         }
       ]
     },
-    "execute_store_ouput": {
+    "execute_store_output": {
       "type": "SEQ",
       "members": [
         {
