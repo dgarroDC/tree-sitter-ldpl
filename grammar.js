@@ -24,6 +24,11 @@ module.exports = grammar({
         $.number
     ),
 
+    _text_value: $ => choice(
+        $._variable,
+        $.text
+    ),
+
     _variable: $ => choice(
         $.identifier,
         $.vector_element
@@ -53,8 +58,8 @@ module.exports = grammar({
 
     escape_sequence: $ => /\\./,
 
-    // TODO: Don't match text or number
-    identifier: $ => /[^\s:]+/,
+    // TODO: Don't match number
+    identifier: $ => /[^\s:"][^\s:]*/,
 
     data_section: $ => seq(
         caseInsensitive("data:\n"),
@@ -103,6 +108,13 @@ module.exports = grammar({
             $.store_random,
             $.floor,
             $.ceil,
+            // Text
+            $.join,
+            $.get_char,
+            $.store_length,
+            $.store_char,
+            $.store_char_code,
+            $.in_join
         ),
         '\n'
     ),
@@ -180,7 +192,7 @@ module.exports = grammar({
 
     continue: $ => caseInsensitive("continue"),
 
-    // TODO: Analise "call sub-procedure"
+    // TODO: Analyze "call sub-procedure"
     call_sub: $ => seq(
         choice(
             caseInsensitive("call"),
@@ -272,6 +284,59 @@ module.exports = grammar({
     ceil: $ => seq(
         caseInsensitive("ceil "),
         $._variable
+    ),
+
+    join: $ => seq(
+        caseInsensitive("join "),
+        $._value,
+        caseInsensitive(" and "),
+        $._value,
+        caseInsensitive(" in "),
+        $._variable
+    ),
+
+    get_char: $ => seq(
+        caseInsensitive("get character at "),
+        $._number_value,
+        caseInsensitive(" from "),
+        $._text_value,
+        caseInsensitive(" in "),
+        $._variable
+    ),
+
+    store_length: $ => seq(
+        caseInsensitive("store length of "),
+        $._text_value,
+        caseInsensitive(" in "),
+        $._variable
+    ),
+
+    store_char: $ => seq(
+        caseInsensitive("store character "),
+        $._number_value,
+        caseInsensitive(" in "),
+        $._variable
+    ),
+
+    store_char_code: $ => seq(
+        caseInsensitive("store character code of "),
+        $._text_value,
+        caseInsensitive(" in "),
+        $._variable
+    ),
+
+    in_join: $ => seq(
+        caseInsensitive("in "),
+        $._variable,
+        caseInsensitive(" join "),
+        repeat1(seq(choice(
+            $._value,
+            caseInsensitive("crlf")
+        ), $._whitespace)),
+        choice(
+            $._value,
+            caseInsensitive("crlf")
+        )
     ),
   }
 });
