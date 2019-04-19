@@ -62,15 +62,23 @@ module.exports = grammar({
     identifier: $ => /[^\s:"]*/,
 
     data_section: $ => seq(
-        caseInsensitive("data:"),
-        "\n",
+        $.data_label,
         repeat(choice($.var_definition, '\n'))
     ),
 
+    data_label: $ => seq(
+        caseInsensitive("data:"),
+        "\n"
+    ),
+
     procedure_section: $ => seq(
+        $.procedure_label,
+        $._block
+    ),
+
+    procedure_label: $ => seq(
         caseInsensitive("procedure:"),
         "\n",
-        $._block
     ),
 
     var_definition: $ => seq(
