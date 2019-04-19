@@ -90,6 +90,16 @@ module.exports = grammar({
             $.wait,
             $.goto,
             $.label,
+            // Arithmetic
+            $.add,
+            $.substract,
+            $.multiply,
+            $.divide,
+            $.modulo,
+            $.abs,
+            $.store_random,
+            $.floor,
+            $.ceil,
         ),
         '\n'
     ),
@@ -194,6 +204,71 @@ module.exports = grammar({
     label: $ => seq(
         caseInsensitive("label "),
         $.identifier
+    ),
+
+    add: $ => seq(
+        caseInsensitive("add "),
+        $._number_value,
+        caseInsensitive(" and "),
+        $._number_value,
+        caseInsensitive(" in "),
+        $._variable
+    ),
+
+    substract: $ => seq(
+        caseInsensitive("substract "),
+        $._number_value,
+        caseInsensitive(" from "),
+        $._number_value,
+        caseInsensitive(" in "),
+        $._variable
+    ),
+
+    multiply: $ => seq(
+        caseInsensitive("multiply "),
+        $._number_value,
+        caseInsensitive(" by "),
+        $._number_value,
+        caseInsensitive(" in "),
+        $._variable
+    ),
+
+    divide: $ => seq(
+        caseInsensitive("divide "),
+        $._number_value,
+        caseInsensitive(" by "),
+        $._number_value,
+        caseInsensitive(" in "),
+        $._variable
+    ),
+
+    modulo: $ => seq(
+        caseInsensitive("modulo "),
+        $._number_value,
+        caseInsensitive(" by "),
+        $._number_value,
+        caseInsensitive(" in "),
+        $._variable
+    ),
+
+    abs: $ => seq(
+        caseInsensitive("abs "),
+        $._variable
+    ),
+
+    store_random: $ => seq(
+        caseInsensitive("store random in "),
+        $._variable
+    ),
+
+    floor: $ => seq(
+        caseInsensitive("floor "),
+        $._variable
+    ),
+
+    ceil: $ => seq(
+        caseInsensitive("ceil "),
+        $._variable
     ),
   }
 });
