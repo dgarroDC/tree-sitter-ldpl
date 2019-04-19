@@ -12,7 +12,7 @@ module.exports = grammar({
 
     _whitespace: $ => /[ \t]/,
 
-    comment: $ => /#.*/,
+    comment: $ => token(prec(1, /#.*/)),
 
     _value: $ => choice(
         $._variable,
@@ -50,7 +50,7 @@ module.exports = grammar({
     text: $ => seq(
         "\"",
         repeat(choice(
-            /[^"\\]/,
+            token(prec(2, /[^"\\]/)),
             $.escape_sequence
         )),
         "\""
