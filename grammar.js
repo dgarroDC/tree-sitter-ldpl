@@ -58,6 +58,8 @@ module.exports = grammar({
 
     escape_sequence: $ => /\\./,
 
+    crlf: $ => caseInsensitive("crlf"),
+
     // TODO: Don't match number
     identifier: $ => /[^\s:"]*/,
 
@@ -365,11 +367,11 @@ module.exports = grammar({
         caseInsensitive(" join "),
         repeat1(seq(choice(
             $._value,
-            caseInsensitive("crlf")
+            $.crlf
         ), $._whitespace)),
         choice(
             $._value,
-            caseInsensitive("crlf")
+            $.crlf
         )
     ),
 
@@ -377,11 +379,11 @@ module.exports = grammar({
         caseInsensitive("display "),
         repeat(seq(choice(
             $._value,
-            caseInsensitive("crlf")
+            $.crlf
         ), $._whitespace)),
         choice(
             $._value,
-            caseInsensitive("crlf")
+            $.crlf
         )
     ),
 
