@@ -5,12 +5,17 @@ module.exports = grammar({
 
   rules: {
     source_file: $ => seq(
-        repeat('\n'),
+        repeat($._newline),
         optional($.data_section),
         $.procedure_section
     ),
 
     _whitespace: $ => /[ \t]/,
+
+    _newline: $ => choice(
+        '\n',
+        '\r\n'
+    ),
 
     comment: $ => token(prec(1, /#.*/)),
 
@@ -65,12 +70,12 @@ module.exports = grammar({
 
     data_section: $ => seq(
         $.data_label,
-        repeat(choice($.var_definition, '\n'))
+        repeat(choice($.var_definition, $._newline))
     ),
 
     data_label: $ => seq(
         caseInsensitive("data:"),
-        "\n"
+        $._newline
     ),
 
     procedure_section: $ => seq(
@@ -80,14 +85,14 @@ module.exports = grammar({
 
     procedure_label: $ => seq(
         caseInsensitive("procedure:"),
-        "\n",
+        $._newline
     ),
 
     var_definition: $ => seq(
         $.identifier,
         caseInsensitive(" is "),
         $.type,
-        "\n"
+        $._newline
     ),
 
     type: $ => seq(
@@ -99,7 +104,7 @@ module.exports = grammar({
         optional(caseInsensitive(" vector"))
     ),
 
-    _block: $ => repeat1(choice($._statement, '\n')),
+    _block: $ => repeat1(choice($._statement, $._newline)),
 
     _statement: $ => seq(
         choice(
@@ -145,12 +150,12 @@ module.exports = grammar({
             $.write_file,
             $.append_file,
         ),
-        '\n'
+        $._newline
     ),
 
     sub_proc: $ => seq(
         $.sub_proc_begin,
-        "\n",
+        $._newline,
         optional($.body),
         $.sub_proc_end
     ),
@@ -171,7 +176,7 @@ module.exports = grammar({
 
     if: $ => seq(
         $.if_begin,
-        "\n",
+        $._newline,
         optional($.body),
         repeat($.else_if),
         optional($.else),
@@ -186,7 +191,7 @@ module.exports = grammar({
 
     else_if: $ => seq(
         $.else_if_begin,
-        "\n",
+        $._newline,
         optional($.body)
     ),
 
@@ -198,7 +203,7 @@ module.exports = grammar({
 
     else: $ => seq(
         $.else_begin,
-        "\n",
+        $._newline,
         optional($.body),
     ),
 
@@ -230,7 +235,7 @@ module.exports = grammar({
 
     while: $ => seq(
         $.while_begin,
-        "\n",
+        $._newline,
         optional($.body),
         $.while_end
     ),
