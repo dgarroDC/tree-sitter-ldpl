@@ -138,6 +138,7 @@ module.exports = grammar({
             $.store_length,
             $.store_char,
             $.store_char_code,
+            $.store_quote,
             $.in_join,
             // IO
             $.display,
@@ -387,6 +388,27 @@ module.exports = grammar({
         $._text_value,
         caseInsensitive(" in "),
         $._variable
+    ),
+
+    store_quote: $ => seq(
+        $.store_quote_begin,
+        $._newline,
+        optional($.quote),
+        $.store_quote_end
+    ),
+
+    store_quote_begin: $ => seq(
+        caseInsensitive("store quote in"),
+        $._variable
+    ),
+
+    store_quote_end: $ => caseInsensitive("end quote"),
+
+    quote: $ => repeat1($._quote_line),
+
+    _quote_line: $ => seq(
+        /[^\n]*/,
+        $._newline
     ),
 
     in_join: $ => seq(
