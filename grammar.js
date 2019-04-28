@@ -410,7 +410,7 @@ module.exports = grammar({
 
     _quote_line: $ => seq(
         optional(token(prec(2, '#'))),
-        /.*/,
+        /[^\r\n]*/,
         $._newline
     ),
 
