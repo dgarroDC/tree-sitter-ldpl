@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-ldpl",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "LDPL grammar for tree-sitter",
   "main": "index.js",
   "scripts": {
