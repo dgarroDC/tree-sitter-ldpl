@@ -72,7 +72,7 @@ module.exports = grammar({
 
     data_section: $ => seq(
         $.data_label,
-        repeat(choice($.var_definition, $._newline))
+        repeat(choice($.var_declaration, $._newline))
     ),
 
     data_label: $ => seq(
@@ -90,7 +90,7 @@ module.exports = grammar({
         $._newline
     ),
 
-    var_definition: $ => seq(
+    var_declaration: $ => seq(
         $.identifier,
         caseInsensitive(" is "),
         $.type,
