@@ -82,7 +82,7 @@ enum {
   aux_sym_SLASH_LBRACKsS_RBRACK_LBRACKtT_RBRACK_LBRACKoO_RBRACK_LBRACKrR_RBRACK_LBRACKeE_RBRACK_LBRACK_TAB_RBRACK_PLUS_LBRACKqQ_RBRACK_LBRACKuU_RBRACK_LBRACKoO_RBRACK_LBRACKtT_RBRACK_LBRACKeE_RBRACK_LBRACK_TAB_RBRACK_PLUS_LBRACKiI_RBRACK_LBRACKnN_RBRACK_SLASH = 66,
   sym_store_quote_end = 67,
   anon_sym_POUND = 68,
-  aux_sym_SLASH_DOT_STAR_SLASH = 69,
+  aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH = 69,
   aux_sym_SLASH_LBRACKiI_RBRACK_LBRACKnN_RBRACK_LBRACK_TAB_RBRACK_PLUS_SLASH = 70,
   aux_sym_SLASH_LBRACK_TAB_RBRACK_PLUS_LBRACKjJ_RBRACK_LBRACKoO_RBRACK_LBRACKiI_RBRACK_LBRACKnN_RBRACK_LBRACK_TAB_RBRACK_PLUS_SLASH = 71,
   aux_sym_SLASH_LBRACKdD_RBRACK_LBRACKiI_RBRACK_LBRACKsS_RBRACK_LBRACKpP_RBRACK_LBRACKlL_RBRACK_LBRACKaA_RBRACK_LBRACKyY_RBRACK_LBRACK_TAB_RBRACK_PLUS_SLASH = 72,
@@ -238,7 +238,7 @@ static const char *ts_symbol_names[] = {
   [aux_sym_SLASH_LBRACKsS_RBRACK_LBRACKtT_RBRACK_LBRACKoO_RBRACK_LBRACKrR_RBRACK_LBRACKeE_RBRACK_LBRACK_TAB_RBRACK_PLUS_LBRACKqQ_RBRACK_LBRACKuU_RBRACK_LBRACKoO_RBRACK_LBRACKtT_RBRACK_LBRACKeE_RBRACK_LBRACK_TAB_RBRACK_PLUS_LBRACKiI_RBRACK_LBRACKnN_RBRACK_SLASH] = "/[sS][tT][oO][rR][eE][ 	]+[qQ][uU][oO][tT][eE][ 	]+[iI][nN]/",
   [sym_store_quote_end] = "store_quote_end",
   [anon_sym_POUND] = "#",
-  [aux_sym_SLASH_DOT_STAR_SLASH] = "/.*/",
+  [aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH] = "/[^\\r\\n]*/",
   [aux_sym_SLASH_LBRACKiI_RBRACK_LBRACKnN_RBRACK_LBRACK_TAB_RBRACK_PLUS_SLASH] = "/[iI][nN][ 	]+/",
   [aux_sym_SLASH_LBRACK_TAB_RBRACK_PLUS_LBRACKjJ_RBRACK_LBRACKoO_RBRACK_LBRACKiI_RBRACK_LBRACKnN_RBRACK_LBRACK_TAB_RBRACK_PLUS_SLASH] = "/[ 	]+[jJ][oO][iI][nN][ 	]+/",
   [aux_sym_SLASH_LBRACKdD_RBRACK_LBRACKiI_RBRACK_LBRACKsS_RBRACK_LBRACKpP_RBRACK_LBRACKlL_RBRACK_LBRACKaA_RBRACK_LBRACKyY_RBRACK_LBRACK_TAB_RBRACK_PLUS_SLASH] = "/[dD][iI][sS][pP][lL][aA][yY][ 	]+/",
@@ -601,7 +601,7 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = true,
     .named = false,
   },
-  [aux_sym_SLASH_DOT_STAR_SLASH] = {
+  [aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH] = {
     .visible = false,
     .named = false,
   },
@@ -4397,7 +4397,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
         ADVANCE(273);
       END_STATE();
     case 502:
-      ACCEPT_TOKEN(aux_sym_SLASH_DOT_STAR_SLASH);
+      ACCEPT_TOKEN(aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH);
       if (lookahead == '#')
         ADVANCE(4);
       if (lookahead == '\t' ||
@@ -4408,51 +4408,57 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
         ADVANCE(505);
       if (lookahead != 0 &&
           lookahead != '\t' &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 503:
       ACCEPT_TOKEN(sym__whitespace);
       if (lookahead != 0 &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 504:
-      ACCEPT_TOKEN(aux_sym_SLASH_DOT_STAR_SLASH);
+      ACCEPT_TOKEN(aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH);
       if (lookahead != 0 &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 505:
-      ACCEPT_TOKEN(aux_sym_SLASH_DOT_STAR_SLASH);
+      ACCEPT_TOKEN(aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH);
       if (lookahead == 'N' ||
           lookahead == 'n')
         ADVANCE(506);
       if (lookahead != 0 &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 506:
-      ACCEPT_TOKEN(aux_sym_SLASH_DOT_STAR_SLASH);
+      ACCEPT_TOKEN(aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH);
       if (lookahead == 'D' ||
           lookahead == 'd')
         ADVANCE(507);
       if (lookahead != 0 &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 507:
-      ACCEPT_TOKEN(aux_sym_SLASH_DOT_STAR_SLASH);
+      ACCEPT_TOKEN(aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH);
       if (lookahead == '\t' ||
           lookahead == ' ')
         ADVANCE(508);
       if (lookahead != 0 &&
           lookahead != '\t' &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 508:
-      ACCEPT_TOKEN(aux_sym_SLASH_DOT_STAR_SLASH);
+      ACCEPT_TOKEN(aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH);
       if (lookahead == '\t' ||
           lookahead == ' ')
         ADVANCE(508);
@@ -4461,49 +4467,55 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
         ADVANCE(509);
       if (lookahead != 0 &&
           lookahead != '\t' &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 509:
-      ACCEPT_TOKEN(aux_sym_SLASH_DOT_STAR_SLASH);
+      ACCEPT_TOKEN(aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH);
       if (lookahead == 'U' ||
           lookahead == 'u')
         ADVANCE(510);
       if (lookahead != 0 &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 510:
-      ACCEPT_TOKEN(aux_sym_SLASH_DOT_STAR_SLASH);
+      ACCEPT_TOKEN(aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH);
       if (lookahead == 'O' ||
           lookahead == 'o')
         ADVANCE(511);
       if (lookahead != 0 &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 511:
-      ACCEPT_TOKEN(aux_sym_SLASH_DOT_STAR_SLASH);
+      ACCEPT_TOKEN(aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH);
       if (lookahead == 'T' ||
           lookahead == 't')
         ADVANCE(512);
       if (lookahead != 0 &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 512:
-      ACCEPT_TOKEN(aux_sym_SLASH_DOT_STAR_SLASH);
+      ACCEPT_TOKEN(aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH);
       if (lookahead == 'E' ||
           lookahead == 'e')
         ADVANCE(513);
       if (lookahead != 0 &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 513:
       ACCEPT_TOKEN(sym_store_quote_end);
       if (lookahead != 0 &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 514:
@@ -4934,7 +4946,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       ACCEPT_TOKEN(aux_sym_SLASH_LBRACKnN_RBRACK_LBRACKoO_RBRACK_LBRACKtT_RBRACK_LBRACK_TAB_RBRACK_PLUS_LBRACKeE_RBRACK_LBRACKqQ_RBRACK_LBRACKuU_RBRACK_LBRACKaA_RBRACK_LBRACKlL_RBRACK_LBRACK_TAB_RBRACK_PLUS_LBRACKtT_RBRACK_LBRACKoO_RBRACK_SLASH);
       END_STATE();
     case 589:
-      ACCEPT_TOKEN(aux_sym_SLASH_DOT_STAR_SLASH);
+      ACCEPT_TOKEN(aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH);
       if (lookahead == '#')
         ADVANCE(590);
       if (lookahead == '\t' ||
@@ -4942,11 +4954,14 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
         ADVANCE(503);
       if (lookahead != 0 &&
           lookahead != '\t' &&
-          lookahead != '\n')
+          lookahead != '\n' &&
+          lookahead != '\r')
         ADVANCE(504);
       END_STATE();
     case 590:
       ACCEPT_TOKEN(sym_comment);
+      if (lookahead == '\r')
+        ADVANCE(13);
       if (lookahead != 0 &&
           lookahead != '\n')
         ADVANCE(590);
@@ -6730,7 +6745,7 @@ static uint16_t ts_parse_table[STATE_COUNT][SYMBOL_COUNT] = {
     [sym_comment] = ACTIONS(107),
     [sym_store_quote_end] = ACTIONS(382),
     [anon_sym_POUND] = ACTIONS(384),
-    [aux_sym_SLASH_DOT_STAR_SLASH] = ACTIONS(386),
+    [aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH] = ACTIONS(386),
   },
   [114] = {
     [sym__newline] = STATE(114),
@@ -7676,7 +7691,7 @@ static uint16_t ts_parse_table[STATE_COUNT][SYMBOL_COUNT] = {
   [186] = {
     [sym__whitespace] = ACTIONS(107),
     [sym_comment] = ACTIONS(5),
-    [aux_sym_SLASH_DOT_STAR_SLASH] = ACTIONS(633),
+    [aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH] = ACTIONS(633),
   },
   [187] = {
     [sym__newline] = STATE(253),
@@ -7697,7 +7712,7 @@ static uint16_t ts_parse_table[STATE_COUNT][SYMBOL_COUNT] = {
     [sym_comment] = ACTIONS(107),
     [sym_store_quote_end] = ACTIONS(639),
     [anon_sym_POUND] = ACTIONS(384),
-    [aux_sym_SLASH_DOT_STAR_SLASH] = ACTIONS(386),
+    [aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH] = ACTIONS(386),
   },
   [190] = {
     [sym__whitespace] = ACTIONS(107),
@@ -8498,7 +8513,7 @@ static uint16_t ts_parse_table[STATE_COUNT][SYMBOL_COUNT] = {
     [sym_comment] = ACTIONS(107),
     [sym_store_quote_end] = ACTIONS(762),
     [anon_sym_POUND] = ACTIONS(764),
-    [aux_sym_SLASH_DOT_STAR_SLASH] = ACTIONS(762),
+    [aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH] = ACTIONS(762),
   },
   [254] = {
     [sym__whitespace] = ACTIONS(5),
@@ -8513,7 +8528,7 @@ static uint16_t ts_parse_table[STATE_COUNT][SYMBOL_COUNT] = {
     [sym_comment] = ACTIONS(107),
     [sym_store_quote_end] = ACTIONS(768),
     [anon_sym_POUND] = ACTIONS(770),
-    [aux_sym_SLASH_DOT_STAR_SLASH] = ACTIONS(773),
+    [aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH] = ACTIONS(773),
   },
   [256] = {
     [sym__whitespace] = ACTIONS(5),
@@ -8819,7 +8834,7 @@ static uint16_t ts_parse_table[STATE_COUNT][SYMBOL_COUNT] = {
     [sym_comment] = ACTIONS(107),
     [sym_store_quote_end] = ACTIONS(816),
     [anon_sym_POUND] = ACTIONS(818),
-    [aux_sym_SLASH_DOT_STAR_SLASH] = ACTIONS(816),
+    [aux_sym_SLASH_LBRACK_CARET_BSLASHr_BSLASHn_RBRACK_STAR_SLASH] = ACTIONS(816),
   },
   [287] = {
     [aux_sym_text_repeat1] = STATE(309),
