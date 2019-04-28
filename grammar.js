@@ -407,7 +407,8 @@ module.exports = grammar({
     quote: $ => repeat1($._quote_line),
 
     _quote_line: $ => seq(
-        /[^\n]*/,
+        optional(token(prec(2, '#'))),
+        /.*/,
         $._newline
     ),
 
