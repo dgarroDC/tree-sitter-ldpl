@@ -21,7 +21,8 @@ module.exports = grammar({
 
     _value: $ => choice(
         $._variable,
-        $._literal
+        $._literal,
+        $.crlf
     ),
 
     _number_value: $ => choice(
@@ -31,7 +32,8 @@ module.exports = grammar({
 
     _text_value: $ => choice(
         $._variable,
-        $.text
+        $.text,
+        $.crlf
     ),
 
     _variable: $ => choice(
@@ -416,26 +418,18 @@ module.exports = grammar({
         caseInsensitive("in "),
         $._variable,
         caseInsensitive(" join "),
-        repeat1(seq(choice(
+        repeat1(seq(
             $._value,
-            $.crlf
-        ), $._whitespace)),
-        choice(
-            $._value,
-            $.crlf
-        )
+            $._whitespace)),
+        $._value
     ),
 
     display: $ => seq(
         caseInsensitive("display "),
-        repeat(seq(choice(
+        repeat(seq(
             $._value,
-            $.crlf
-        ), $._whitespace)),
-        choice(
-            $._value,
-            $.crlf
-        )
+            $._whitespace)),
+        $._value
     ),
 
     accept: $ => seq(
